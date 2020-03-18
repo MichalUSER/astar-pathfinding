@@ -60,11 +60,11 @@ func find_best_neighbour():
 func _ready():
 	for y in range(20):
 		for x in range(33):
-			set_cell(x, y, 0)
-	for i in range(40):
-		var ranx = randi()%33+0
-		var rany = randi()%20+0
-		set_cell(ranx, rany, 2)
+			var ran = randi()%10+1
+			if ran == 10:
+				set_cell(x, y, 2)
+			else:
+				set_cell(x, y, 0)
 	set_cell(start_cell.x, start_cell.y, 1)
 	set_cell(end_cell.x, end_cell.y, 1)
 
