@@ -1,7 +1,9 @@
 extends TileMap
 
+var original_start_cell = Vector2()
+var original_end_cell = Vector2(32, 19)
 var start_cell = Vector2()
-var end_cell = Vector2(32, 19)
+var end_cell = Vector2()
 var current_cell = start_cell
 var path = []
 var neighbours = []
@@ -9,6 +11,23 @@ var neighbours = []
 func set_path():
 	for cell in path:
 		set_cell(cell.x, cell.y, 1)
+func generate():
+	clear()
+	start_cell = original_start_cell
+	end_cell = original_end_cell
+	current_cell = start_cell
+	path = []
+	neighbours = []
+	for y in range(20):
+		for x in range(33):
+			randomize()
+			var ran = randi()%10+1
+			if ran == 10:
+				set_cell(x, y, 2)
+			else:
+				set_cell(x, y, 0)
+	set_cell(start_cell.x, start_cell.y, 1)
+	set_cell(end_cell.x, end_cell.y, 1)
 
 func find_neighbours():
 	neighbours.clear()
@@ -58,8 +77,11 @@ func find_best_neighbour():
 				set_cell(current_cell.x, current_cell.y, 2)
 
 func _ready():
+	start_cell = original_start_cell
+	end_cell = original_end_cell
 	for y in range(20):
 		for x in range(33):
+			randomize()
 			var ran = randi()%10+1
 			if ran == 10:
 				set_cell(x, y, 2)
@@ -72,3 +94,5 @@ func _physics_process(delta):
 	if current_cell != end_cell:
 		find_neighbours()
 		find_best_neighbour()
+	if Input.is_action_pressed("ui_select"):
+		generate()
